@@ -37,26 +37,9 @@ class Customer
     #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'customer', orphanRemoval: true)]
     private Collection $addresses;
 
-    /**
-     * @var Collection<int, Order>
-     */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'customer')]
-    private Collection $orders;
-
-    /**
-     * @var Collection<int, Review>
-     */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'customer')]
-    private Collection $reviews;
-
-    #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
-    private ?User $userinfo = null;
-
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
-        $this->orders = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,28 +107,6 @@ class Customer
         return $this;
     }
 
-    public function getUserinfo(): ?User
-    {
-        return $this->userinfo;
-    }
-
-    public function setUserinfo(?User $userinfo): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($userinfo === null && $this->userinfo !== null) {
-            $this->userinfo->setCustomer(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($userinfo !== null && $userinfo->getCustomer() !== $this) {
-            $userinfo->setCustomer($this);
-        }
-
-        $this->userinfo = $userinfo;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, CustomerAddress>
      */
@@ -170,66 +131,6 @@ class Customer
             // set the owning side to null (unless already changed)
             if ($address->getCustomer() === $this) {
                 $address->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Order>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): static
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Order $order): static
-    {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getCustomer() === $this) {
-                $order->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Review>
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
-    public function addReview(Review $review): static
-    {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews->add($review);
-            $review->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReview(Review $review): static
-    {
-        if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
-            if ($review->getCustomer() === $this) {
-                $review->setCustomer(null);
             }
         }
 

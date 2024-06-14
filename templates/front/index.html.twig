@@ -10,7 +10,7 @@
             {% if( 'http://' in product.images.0.file or 'https://' in product.images.0.file) %}
             <img src="{{ product.images.0.file }}" class="img.fluid">
             {% else %}
-            <img src=" {{ asset{'uploads/photos'-product.images.0.file} }}" class="img-fluid">
+            <img src=" {{ asset('uploads/photos'-product.images.0.file) }}" class="img-fluid">
             {% endif %}
         </a>
         <h2>{{ product.name }}</h2>
