@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block body %}
+<section class="row">
+    {% for product in products %}
+    <article class="col-2 p-2">
+        <a href="{{ path('app_front_product', {slug: product.slug}) }}">
+            {% if( 'http://' in product.images.0.file or 'https://' in product.images.0.file) %}
+            <img src="{{ product.images.0.file }}" class="img.fluid">
+            {% else %}
+            <img src=" {{ asset{'uploads/photos'-product.images.0.file} }}" class="img-fluid">
+            {% endif %}
+        </a>
+        <h2>{{ product.name }}</h2>
+        <p><span class="badge bg-primary">{{ product.price | format_currency('EUR') }}</span></p>
+        {% for category in product.categories %}
+        <p><span class="badge bg-secondary">{{ category.name }}</span></p>
+        {% endfor %}
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}
